@@ -26,20 +26,20 @@ def main() -> None:
 
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+        entry_points=[CommandHandler('start', start)],  # user create with id, first_name, last_name, username, ...
         states={
-            GENDER: [MessageHandler(Filters.regex('^(Boy|Girl|Other)$'), gender)],
+            GENDER: [MessageHandler(Filters.regex('^(Male|Female)$'), gender)], # user update and add gender
             PHOTO: [
-                MessageHandler(Filters.photo, photo), 
+                MessageHandler(Filters.photo, photo), # user update and add phone
                 CommandHandler('skip', skip_photo)
             ],
             LOCATION: [
-                MessageHandler(Filters.location, location),
+                MessageHandler(Filters.location, location), # user update and add location
                 CommandHandler('skip', skip_location),
             ],
-            BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
+            BIO: [MessageHandler(Filters.text & ~Filters.command, bio)], # user update and add bio
         },
-        fallbacks=[CommandHandler('cancel', cancel)],
+        fallbacks=[CommandHandler('cancel', cancel)], # user delete
     )
 
     dispatcher.add_handler(conv_handler)
